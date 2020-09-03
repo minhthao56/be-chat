@@ -5,8 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 // server and module
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersController } from './users/users.controller';
-import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -15,13 +13,13 @@ import { UsersModule } from './users/users.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url:
-        'postgres://ueczwmrr:d-mfTcYlrxCcjCKaAVLDWKR6IuUh5EZA@john.db.elephantsql.com:5432/ueczwmrr',
+        'postgres://ypiskswg:zXD3ao-hWyB3sQ6xkbrIurlac8xo1puM@arjuna.db.elephantsql.com:5432/ypiskswg',
       autoLoadEntities: true,
       synchronize: true,
     }),
     UsersModule,
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UsersService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

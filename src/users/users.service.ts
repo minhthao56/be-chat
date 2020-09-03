@@ -13,10 +13,21 @@ export class UsersService {
 
   createUser(createUserDto: CreateUserDto): Promise<any> {
     const user = new User();
-    // user.email = createUserDto.email;
-    // user.name = createUserDto.name;
-    // user.password = createUserDto.password;
-    // return this.userRepository.save(user);
-    return;
+    user.email = createUserDto.email;
+    user.name = createUserDto.name;
+    user.password = createUserDto.password;
+    return this.usersRepository.save(user);
+  }
+  findAll(): Promise<any> {
+    return this.usersRepository.find();
+  }
+  findOne(id: number): Promise<any> {
+    return this.usersRepository.findOne(id);
+  }
+  updateOne(id: number, createUserDto: CreateUserDto): Promise<any> {
+    return this.usersRepository.update(id, createUserDto);
+  }
+  deleteOne(id: number): Promise<any> {
+    return this.usersRepository.delete(id);
   }
 }
