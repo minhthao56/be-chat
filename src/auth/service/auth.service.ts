@@ -1,6 +1,5 @@
+import { LoginDto } from './../dto/login.dto';
 import * as bcrypt from 'bcrypt';
-
-import { User } from './../../users/user.entity';
 import { UsersService } from './../../users/users.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -12,11 +11,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  private async validateUser(userData: User): Promise<any> {
+  private async validateUser(userData: LoginDto): Promise<any> {
     return this.usersService.findByEmail(userData.email);
   }
 
-  async login(user: User): Promise<any> {
+  async login(user: LoginDto): Promise<any> {
     const userInDB = await this.validateUser(user);
     if (!userInDB) {
       throw new HttpException('Not found email', HttpStatus.NOT_FOUND);
