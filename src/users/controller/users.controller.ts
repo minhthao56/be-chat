@@ -8,8 +8,8 @@ import {
   Delete,
   Req,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-use.dto';
-import { UsersService } from './users.service';
+import { CreateUserDto } from '../dto/create-use.dto';
+import { UsersService } from '../service/users.service';
 import { Request } from 'express';
 
 @Controller('users')
@@ -23,7 +23,7 @@ export class UsersController {
   @Get()
   // eslint-disable-next-line @typescript-eslint/ban-types
   findAll(@Req() req: Request): Promise<any> {
-    console.log('controller' + req.header('token'));
+    // console.log('controller' + req.header('token'));
     return this.usersService.findAll();
   }
 

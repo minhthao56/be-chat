@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AppGateway } from './app.gateway';
+import { TheaterModule } from './theater/theater.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AppGateway } from './app.gateway';
     }),
     UsersModule,
     AuthModule,
+    TheaterModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],

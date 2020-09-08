@@ -5,8 +5,8 @@ import { Request, Response } from 'express';
 export class TokenMiddleware implements NestMiddleware {
   // eslint-disable-next-line @typescript-eslint/ban-types
   use(req: Request, res: Response, next: Function) {
-    const token = req.header('token');
-    console.log('MiddleWare Logging' + token);
+    // const token = req.header('token');
+    // console.log('MiddleWare Logging' + token);
     next();
   }
 }
