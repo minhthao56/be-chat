@@ -1,13 +1,15 @@
+import { Theater } from './../entity/theater.entity';
+import { User } from './../../users/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTheaterDto } from './../dto/create-theater';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { Theater } from '../entity/theater.entity';
 
 @Injectable()
 export class TheaterService {
   constructor(
     @InjectRepository(Theater)
+    @InjectRepository(User)
     private readonly repository: Repository<Theater>,
   ) {}
 
@@ -24,5 +26,17 @@ export class TheaterService {
 
   async deletelOne(id: string): Promise<any> {
     return this.repository.delete(id);
+  }
+
+  async findOne(id: string): Promise<any> {
+    const r = await this.repository.findOne(id, {
+      join: {
+        alias: 'user',
+        innerJoin: {
+          user: 'user.id',
+        },
+      },
+    });
+    return r;
   }
 }

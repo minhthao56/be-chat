@@ -22,4 +22,9 @@ export class TheaterController {
   async deleteOne(@Param('id') id: string): Promise<any> {
     return this.theaterService.deletelOne(id);
   }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<any> {
+    return this.theaterService.findOne(id);
+  }
 }
