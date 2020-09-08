@@ -15,6 +15,7 @@ import { Request } from 'express';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
   @Post()
   createUser(@Body() createUserDto: CreateUserDto): Promise<any> {
     return this.usersService.createUser(createUserDto);
@@ -29,8 +30,6 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<any> {
-    console.log(id);
-
     return this.usersService.findOne(id);
   }
 
