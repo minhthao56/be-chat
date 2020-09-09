@@ -9,6 +9,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
+
 @Entity()
 export class Theater {
   @PrimaryGeneratedColumn('uuid')
@@ -17,11 +18,17 @@ export class Theater {
   @Column()
   userId: string;
 
-  @ManyToOne(
-    () => User,
-    user => user.theater,
-  )
-  @JoinColumn()
-  user: Promise<User>;
+  @Column()
+  userId2: string
+
+  // @ManyToOne(
+  //   () => User,
+  //   user => user.theater,
+  // )
+  // @JoinColumn()
+  // user: Promise<User>;
+  // @ManyToMany(()=> User)
+  // @JoinTable({name:"theater_user"})
+  // user:User[]
 
 }

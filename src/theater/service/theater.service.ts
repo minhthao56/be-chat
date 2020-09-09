@@ -9,13 +9,15 @@ import { Injectable } from '@nestjs/common';
 export class TheaterService {
   constructor(
     @InjectRepository(Theater)
-    @InjectRepository(User)
     private readonly theaterRepository: Repository<Theater>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async createTheater(createTheaterDto: CreateTheaterDto): Promise<any> {
     const theater = new Theater();
     theater.userId = createTheaterDto.userId;
+    theater.userId2 = createTheaterDto.userId2;
 
     return this.theaterRepository.save(theater);
   }
@@ -29,12 +31,21 @@ export class TheaterService {
   }
 
   async findOne(id: string): Promise<any> {
-    const r = await this.theaterRepository.findOne({
+    const theaterInDB = await this.theaterRepository.findOne({
       where: { id: id },
-      relations: ['user'],
     });
-    console.log(r);
+    const userInDB = await this.userRepository.findOne({
+      where: { id: theaterInDB.userId },
+    });
+    const user2InBD = await this.userRepository.findOne({
+      where: { id: theaterInDB.userId2 },
+    });
 
-    return r;
+    const dataTheater = {
+      ...theaterInDB,
+      user: userInDB,
+      user2: user2InBD,
+    };
+    return dataTheater;
   }
 }

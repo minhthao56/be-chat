@@ -1,3 +1,4 @@
+import { User } from './../users/entity/user.entity';
 import { UsersModule } from './../users/users.module';
 import { Theater } from './entity/theater.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -6,7 +7,7 @@ import { TheaterController } from './controller/theater.controller';
 import { TheaterService } from './service/theater.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Theater]),UsersModule],
+  imports: [TypeOrmModule.forFeature([Theater, User])],
   controllers: [TheaterController],
   providers: [TheaterService],
   exports: [TheaterService],

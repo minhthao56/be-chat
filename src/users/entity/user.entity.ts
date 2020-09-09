@@ -22,11 +22,11 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(
-    () => Theater,
-    theater => theater.user,
-  )
-  theater: Promise<Theater>;
+  // @OneToMany(
+  //   () => Theater,
+  //   theater => theater.user,
+  // )
+  // theater: Promise<Theater>;
 
   @BeforeInsert()
   async hashPassword() {
