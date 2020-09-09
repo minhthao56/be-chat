@@ -10,32 +10,28 @@ export class TheaterService {
   constructor(
     @InjectRepository(Theater)
     @InjectRepository(User)
-    private readonly repository: Repository<Theater>,
+    private readonly theaterRepository: Repository<Theater>,
   ) {}
 
   async createTheater(createTheaterDto: CreateTheaterDto): Promise<any> {
     const theater = new Theater();
-    theater.idUser1 = createTheaterDto.idUser1;
-    theater.idUser2 = createTheaterDto.idUser2;
-    return await this.repository.save(theater);
+    theater.userId1 = createTheaterDto.userId1;
+    theater.userId2 = createTheaterDto.userId2
+    return this.theaterRepository.save(theater);
   }
 
   async findAll(): Promise<any> {
-    return this.repository.find();
+    return this.theaterRepository.find();
   }
 
   async deletelOne(id: string): Promise<any> {
-    return this.repository.delete(id);
+    return this.theaterRepository.delete(id);
   }
 
   async findOne(id: string): Promise<any> {
-    const r = await this.repository.findOne(id, {
-      join: {
-        alias: 'user',
-        innerJoin: {
-          user: 'user.id',
-        },
-      },
+    const r = await this.theaterRepository.findOne({
+      where: { id: id },
+      relations: ['user1', 'user2'],
     });
     return r;
   }

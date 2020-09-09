@@ -1,4 +1,5 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Theater } from './../../theater/entity/theater.entity';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity()
@@ -14,6 +15,10 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(()=>Theater, theater=> theater.user1)
+  theater: Promise<Theater>
+
 
   @BeforeInsert()
   async hashPassword() {

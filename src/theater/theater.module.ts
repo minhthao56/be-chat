@@ -1,3 +1,4 @@
+import { UsersModule } from './../users/users.module';
 import { Theater } from './entity/theater.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -5,7 +6,7 @@ import { TheaterController } from './controller/theater.controller';
 import { TheaterService } from './service/theater.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Theater])],
+  imports: [TypeOrmModule.forFeature([Theater]),UsersModule],
   controllers: [TheaterController],
   providers: [TheaterService],
   exports: [TheaterService],

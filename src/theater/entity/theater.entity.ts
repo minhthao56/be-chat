@@ -1,22 +1,30 @@
 import { User } from './../../users/entity/user.entity';
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Theater {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(
-    type => User,
-    user => user.id,
-  )
-  @JoinColumn()
-  idUser1: User;
+  @Column()
+  userId1: string
+
+  @Column()
+  userId2: string
 
   @ManyToOne(
-    type => User,
-    user => user.id,
+    () => User,
+    user1 => user1.theater,
   )
   @JoinColumn()
-  idUser2: User;
+  user1: Promise<User>;
+
+  @ManyToOne(
+    () => User,
+    user2 => user2.theater,
+  )
+  @JoinColumn()
+  user2: Promise<User>;
+
+
 }
