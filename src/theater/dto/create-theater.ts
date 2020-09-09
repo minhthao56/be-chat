@@ -2,8 +2,6 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateTheaterDto {
   @IsNotEmpty()
-  userId1: string;
+  userId: string;
 
-  @IsNotEmpty()
-  userId2: string;
 }

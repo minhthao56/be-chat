@@ -15,8 +15,8 @@ export class TheaterService {
 
   async createTheater(createTheaterDto: CreateTheaterDto): Promise<any> {
     const theater = new Theater();
-    theater.userId1 = createTheaterDto.userId1;
-    theater.userId2 = createTheaterDto.userId2
+    theater.userId = createTheaterDto.userId;
+
     return this.theaterRepository.save(theater);
   }
 
@@ -31,8 +31,10 @@ export class TheaterService {
   async findOne(id: string): Promise<any> {
     const r = await this.theaterRepository.findOne({
       where: { id: id },
-      relations: ['user1', 'user2'],
+      relations: ['user'],
     });
+    console.log(r);
+
     return r;
   }
 }

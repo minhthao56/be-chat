@@ -1,5 +1,13 @@
 import { User } from './../../users/entity/user.entity';
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 
 @Entity()
 export class Theater {
@@ -7,24 +15,13 @@ export class Theater {
   id: string;
 
   @Column()
-  userId1: string
-
-  @Column()
-  userId2: string
+  userId: string;
 
   @ManyToOne(
     () => User,
-    user1 => user1.theater,
+    user => user.theater,
   )
   @JoinColumn()
-  user1: Promise<User>;
-
-  @ManyToOne(
-    () => User,
-    user2 => user2.theater,
-  )
-  @JoinColumn()
-  user2: Promise<User>;
-
+  user: Promise<User>;
 
 }
