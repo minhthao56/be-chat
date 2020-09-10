@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AppGateway } from './app.gateway';
 import { TheaterModule } from './theater/theater.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -17,13 +18,14 @@ import { TheaterModule } from './theater/theater.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url:
-        'postgres://ypiskswg:zXD3ao-hWyB3sQ6xkbrIurlac8xo1puM@arjuna.db.elephantsql.com:5432/ypiskswg',
+        'postgres://bnhuckxq:UhagbgGI3I6CSWLibdwksM36uqw6Qhch@arjuna.db.elephantsql.com:5432/bnhuckxq',
       autoLoadEntities: true,
       synchronize: true,
     }),
     UsersModule,
     AuthModule,
     TheaterModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],

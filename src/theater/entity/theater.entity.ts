@@ -1,17 +1,10 @@
-import { User } from './../../users/entity/user.entity';
-import {
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
-
+import { MessagesEntity } from './../../messages/entity/message.entity';
+import { TimeStamp } from './../../common/time.entity';
+// import { User } from './../../users/entity/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
-export class Theater {
+export class TheaterEntity extends TimeStamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -19,16 +12,11 @@ export class Theater {
   userId: string;
 
   @Column()
-  userId2: string
+  userId2: string;
 
-  // @ManyToOne(
-  //   () => User,
-  //   user => user.theater,
-  // )
-  // @JoinColumn()
-  // user: Promise<User>;
-  // @ManyToMany(()=> User)
-  // @JoinTable({name:"theater_user"})
-  // user:User[]
-
+  @OneToMany(
+    () => MessagesEntity,
+    message => message.theater,
+  )
+  message: Promise<MessagesEntity>;
 }

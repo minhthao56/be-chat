@@ -1,15 +1,18 @@
-import { Theater } from './../../theater/entity/theater.entity';
+import { MessagesEntity } from './../../messages/entity/message.entity';
+import { TimeStamp } from './../../common/time.entity';
 import {
   BeforeInsert,
   Column,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
+  OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity()
-export class User {
+@Unique(['email', 'name'])
+export class UserEntity extends TimeStamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,11 +25,11 @@ export class User {
   @Column()
   password: string;
 
-  // @OneToMany(
-  //   () => Theater,
-  //   theater => theater.user,
-  // )
-  // theater: Promise<Theater>;
+  @OneToMany(
+    () => MessagesEntity,
+    message => message.user,
+  )
+  message: Promise<MessagesEntity>;
 
   @BeforeInsert()
   async hashPassword() {

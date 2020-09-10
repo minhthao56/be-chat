@@ -1,21 +1,21 @@
-import { Theater } from './../entity/theater.entity';
-import { User } from './../../users/entity/user.entity';
+import { TheaterEntity } from './../entity/theater.entity';
+import { UserEntity } from './../../users/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateTheaterDto } from './../dto/create-theater';
+import { CreateTheaterDto } from '../dto/create-theater.dto';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TheaterService {
   constructor(
-    @InjectRepository(Theater)
-    private readonly theaterRepository: Repository<Theater>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(TheaterEntity)
+    private readonly theaterRepository: Repository<TheaterEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async createTheater(createTheaterDto: CreateTheaterDto): Promise<any> {
-    const theater = new Theater();
+    const theater = new TheaterEntity();
     theater.userId = createTheaterDto.userId;
     theater.userId2 = createTheaterDto.userId2;
 
@@ -31,6 +31,7 @@ export class TheaterService {
   }
 
   async findOne(id: string): Promise<any> {
+
     const theaterInDB = await this.theaterRepository.findOne({
       where: { id: id },
     });

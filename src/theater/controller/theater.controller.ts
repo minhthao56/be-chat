@@ -1,4 +1,4 @@
-import { CreateTheaterDto } from './../dto/create-theater';
+import { CreateTheaterDto } from '../dto/create-theater.dto';
 import { TheaterService } from './../service/theater.service';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 
