@@ -33,7 +33,11 @@ export class MessagesEntity extends TimeStamp {
 
   @ManyToOne(
     () => TheaterEntity,
-    theater => theater,
+    theater => theater.message,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @JoinColumn()
   theater: TheaterEntity;

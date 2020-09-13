@@ -25,11 +25,16 @@ export class AuthService {
       const payload = {
         name: userInDB.name,
         id: userInDB.id,
+        email: userInDB.email,
+        urlAvatar: userInDB.urlAvatar,
       };
       return {
         token: this.jwtService.sign(payload),
-        dataUser: payload,
       };
     }
+  }
+  async CheckLogin(token: string): Promise<any> {
+    const result = await this.jwtService.verify(token);
+    return result;
   }
 }

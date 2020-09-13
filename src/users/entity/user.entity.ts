@@ -25,6 +25,12 @@ export class UserEntity extends TimeStamp {
   @Column()
   password: string;
 
+  @Column({
+    default:
+      'https://res.cloudinary.com/du4arxzzj/image/upload/v1590497543/user_lp41pe.png',
+  })
+  urlAvatar: string;
+
   @OneToMany(
     () => MessagesEntity,
     message => message.user,

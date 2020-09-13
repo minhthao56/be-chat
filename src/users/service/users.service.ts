@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../entity/user.entity';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-use.dto';
@@ -9,19 +10,31 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
+    private jwtService: JwtService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<any> {
     const user = new UserEntity();
     const userInDB = await this.findByEmail(createUserDto.email);
-
+    if (createUserDto.password !== createUserDto.confirm) {
+      throw new HttpException("Password didn't match", HttpStatus.BAD_REQUEST);
+    }
     if (userInDB) {
       throw new HttpException('Email is existed', HttpStatus.BAD_REQUEST);
     } else {
       user.email = createUserDto.email;
       user.name = createUserDto.name;
       user.password = createUserDto.password;
-      return await this.usersRepository.save(user);
+      const userCreated = await this.usersRepository.save(user);
+      const payload = {
+        name: userCreated.name,
+        id: userCreated.id,
+        email: userCreated.email,
+        urlAvatar: userInDB.urlAvatar,
+      };
+      return {
+        token: this.jwtService.sign(payload),
+      };
     }
   }
 
