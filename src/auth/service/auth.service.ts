@@ -34,7 +34,11 @@ export class AuthService {
     }
   }
   async CheckLogin(token: string): Promise<any> {
-    const result = await this.jwtService.verify(token);
-    return result;
+    try {
+      const result = await this.jwtService.verify(token);
+      return result;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.FORBIDDEN);
+    }
   }
 }
