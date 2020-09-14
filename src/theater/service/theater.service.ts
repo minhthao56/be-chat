@@ -31,7 +31,6 @@ export class TheaterService {
   }
 
   async findOne(id: string): Promise<any> {
-
     const theaterInDB = await this.theaterRepository.findOne({
       where: { id: id },
     });
@@ -48,5 +47,18 @@ export class TheaterService {
       user2: user2InBD,
     };
     return dataTheater;
+  }
+  async findOfUser(id: string): Promise<any> {
+    const allTheaterOfUser = await this.theaterRepository.find({
+      where: { userId2: id }, relations:['user']
+    });
+
+    // const userInDB = await this.userRepository.find({
+    //   where: { id: allTheaterOfUser.userId },
+    // });
+    // const user2InBD = await this.userRepository.findOne({
+    //   where: { id: allTheaterOfUser.userId2 },
+    // });
+    return allTheaterOfUser;
   }
 }

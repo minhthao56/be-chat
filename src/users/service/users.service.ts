@@ -30,7 +30,7 @@ export class UsersService {
         name: userCreated.name,
         id: userCreated.id,
         email: userCreated.email,
-        urlAvatar: userInDB.urlAvatar,
+        urlAvatar: userCreated.urlAvatar,
       };
       return {
         token: this.jwtService.sign(payload),

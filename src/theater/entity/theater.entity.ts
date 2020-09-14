@@ -1,7 +1,15 @@
 import { MessagesEntity } from './../../messages/entity/message.entity';
 import { TimeStamp } from './../../common/time.entity';
 // import { User } from './../../users/entity/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { UserEntity } from 'src/users/entity/user.entity';
 
 @Entity()
 export class TheaterEntity extends TimeStamp {
@@ -22,4 +30,11 @@ export class TheaterEntity extends TimeStamp {
     },
   )
   message: Promise<MessagesEntity>;
+
+  @ManyToOne(
+    () => UserEntity,
+    user => user.theater,
+  )
+  @JoinColumn()
+  user: UserEntity;
 }

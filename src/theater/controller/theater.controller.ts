@@ -27,4 +27,9 @@ export class TheaterController {
   async findOne(@Param('id') id: string): Promise<any> {
     return this.theaterService.findOne(id);
   }
+
+  @Get('user/:userId')
+  async findTheaterOfUser(@Param('userId') userId: string): Promise<any> {
+    return this.theaterService.findOfUser(userId);
+  }
 }
