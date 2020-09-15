@@ -54,16 +54,24 @@ export class TheaterService {
       relations: ['user'],
     });
 
-    const user2 = await this.userRepository.findOne({
-      where: { id: allTheaterOfUser[0].userId2 },
-    });
+    const users2 = [];
 
-    const mapAllTheaterOfUser = allTheaterOfUser.map(user => {
-      const userCreate = { user2: user2 };
-      Object.assign(user, userCreate);
-      return user;
-    });
+    for await (const user of allTheaterOfUser) {
+      const user2 = await this.userRepository.findOne({
+        where: { id: user.userId2 },
+      });
+      users2.push(user2);
+    }
 
-    return mapAllTheaterOfUser;
+    for await (const user of allTheaterOfUser) {
+      for await (const user2 of users2) {
+        if (user.userId2 === user2.id) {
+          const userCreate = { user2: user2 };
+          Object.assign(user, userCreate);
+        }
+      }
+    }
+
+    return allTheaterOfUser;
   }
 }
