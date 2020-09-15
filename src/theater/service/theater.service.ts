@@ -50,15 +50,20 @@ export class TheaterService {
   }
   async findOfUser(id: string): Promise<any> {
     const allTheaterOfUser = await this.theaterRepository.find({
-      where: { userId2: id }, relations:['user']
+      where: [{ userId: id }, { userId2: id }],
+      relations: ['user'],
     });
 
-    // const userInDB = await this.userRepository.find({
-    //   where: { id: allTheaterOfUser.userId },
-    // });
-    // const user2InBD = await this.userRepository.findOne({
-    //   where: { id: allTheaterOfUser.userId2 },
-    // });
-    return allTheaterOfUser;
+    const user2 = await this.userRepository.findOne({
+      where: { id: allTheaterOfUser[0].userId2 },
+    });
+
+    const mapAllTheaterOfUser = allTheaterOfUser.map(user => {
+      const userCreate = { user2: user2 };
+      Object.assign(user, userCreate);
+      return user;
+    });
+
+    return mapAllTheaterOfUser;
   }
 }

@@ -36,5 +36,5 @@ export class TheaterEntity extends TimeStamp {
     user => user.theater,
   )
   @JoinColumn()
-  user: UserEntity;
+  user: UserEntity[];
 }

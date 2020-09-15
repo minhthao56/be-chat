@@ -43,6 +43,7 @@ export class UserEntity extends TimeStamp {
   )
   theater: Promise <TheaterEntity>
 
+  
 
 
   @BeforeInsert()
