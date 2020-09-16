@@ -48,6 +48,7 @@ export class TheaterService {
     };
     return dataTheater;
   }
+  
   async findOfUser(id: string): Promise<any> {
     const allTheaterOfUser = await this.theaterRepository.find({
       where: [{ userId: id }, { userId2: id }],

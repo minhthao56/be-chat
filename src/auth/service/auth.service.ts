@@ -33,6 +33,7 @@ export class AuthService {
       };
     }
   }
+
   async CheckLogin(token: string): Promise<any> {
     try {
       const result = await this.jwtService.verify(token);
