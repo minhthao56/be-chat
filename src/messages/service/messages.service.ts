@@ -30,4 +30,11 @@ export class MessagesService {
   async findAllMassages(): Promise<any> {
     return this.messageRepository.find({ relations: ['user', 'theater'] });
   }
+
+  async findOneMessage(id: string): Promise<any> {
+    return this.messageRepository.findOne({
+      where: { id: id },
+      relations: ['user', 'theater'],
+    });
+  }
 }

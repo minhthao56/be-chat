@@ -12,5 +12,6 @@ import { TheaterEntity } from 'src/theater/entity/theater.entity';
   ],
   providers: [MessagesService],
   controllers: [MessagesController],
+  exports:[MessagesService]
 })
 export class MessagesModule {}

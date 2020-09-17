@@ -18,8 +18,14 @@ export class MessagesController {
     return await this.messagesSerive.findAllMassages();
   }
 
-  @Get(':id')
-  async findAllMessageInTheater(@Param('id') id: string): Promise<any> {
-    return await this.messagesSerive.findAllMessagesInThearter(id);
+  @Get(':theaterId')
+  async findAllMessageInTheater(
+    @Param('theaterId') theaterId: string,
+  ): Promise<any> {
+    return await this.messagesSerive.findAllMessagesInThearter(theaterId);
+  }
+  @Get('message/:id')
+  async findOneMessage(@Param('id') id: string): Promise<any> {
+    return await this.messagesSerive.findOneMessage(id);
   }
 }
