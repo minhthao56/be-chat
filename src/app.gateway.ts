@@ -1,5 +1,4 @@
 import { MessagesService } from './messages/service/messages.service';
-
 import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
@@ -32,7 +31,6 @@ export class AppGateway
   ): Promise<any> {
     const mess = await this.messagesService.createMessage(payload);
     const detailMess = await this.messagesService.findOneMessage(mess.id);
-    console.log(detailMess);
     this.server.to(payload.theaterId).emit('mess', detailMess);
   }
 

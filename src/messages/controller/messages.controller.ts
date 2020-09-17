@@ -24,6 +24,7 @@ export class MessagesController {
   ): Promise<any> {
     return await this.messagesSerive.findAllMessagesInThearter(theaterId);
   }
+  
   @Get('message/:id')
   async findOneMessage(@Param('id') id: string): Promise<any> {
     return await this.messagesSerive.findOneMessage(id);

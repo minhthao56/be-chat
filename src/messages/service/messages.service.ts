@@ -24,6 +24,7 @@ export class MessagesService {
     return this.messageRepository.find({
       where: { theaterId: id },
       relations: ['user', 'theater'],
+      order: { createAt: 'ASC' },
     });
   }
 
