@@ -33,8 +33,15 @@ export class TheaterEntity extends TimeStamp {
 
   @ManyToOne(
     () => UserEntity,
-    user => user.theater,
+    user => user,
   )
-  @JoinColumn()
-  user: UserEntity[];
+  @JoinColumn({ referencedColumnName: 'id', name: 'userId' })
+  user: UserEntity;
+
+  @ManyToOne(
+    () => UserEntity,
+    user => user,
+  )
+  @JoinColumn({ referencedColumnName: 'id', name: 'userId2' })
+  user2: UserEntity;
 }

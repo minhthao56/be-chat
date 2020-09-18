@@ -9,7 +9,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { TheaterEntity } from 'src/theater/entity/theater.entity';
+// import { TheaterEntity } from 'src/theater/entity/theater.entity';
 
 @Entity()
 @Unique(['email', 'name'])
@@ -38,13 +38,10 @@ export class UserEntity extends TimeStamp {
   )
   message: Promise<MessagesEntity>;
 
-  @OneToMany(
-    ()=> TheaterEntity, theater=>theater.user
-  )
-  theater: Promise <TheaterEntity>
-
-  
-
+  // @OneToMany(
+  //   ()=> TheaterEntity, theater=>theater.user
+  // )
+  // theater: Promise <TheaterEntity>
 
   @BeforeInsert()
   async hashPassword() {

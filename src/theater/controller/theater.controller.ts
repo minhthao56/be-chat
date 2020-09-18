@@ -30,6 +30,6 @@ export class TheaterController {
 
   @Get('user/:userId')
   async findTheaterOfUser(@Param('userId') userId: string): Promise<any> {
-    return this.theaterService.findOfUser(userId);
+    return this.theaterService.findTheaterOfUser(userId);
   }
 }

@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppGateway } from './app.gateway';
 import { TheaterModule } from './theater/theater.module';
 import { MessagesModule } from './messages/messages.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MessagesModule } from './messages/messages.module';
     AuthModule,
     TheaterModule,
     MessagesModule,
+    FriendsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],

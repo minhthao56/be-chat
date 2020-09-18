@@ -20,10 +20,10 @@ export class MessagesService {
     return await this.messageRepository.save(message);
   }
 
-  async findAllMessagesInThearter(id: string): Promise<any> {
+  async findAllMessagesInThearter(theaterId: string): Promise<any> {
     return this.messageRepository.find({
-      where: { theaterId: id },
-      relations: ['user', 'theater'],
+      where: { theaterId: theaterId },
+      relations: ['user'],
       order: { createAt: 'ASC' },
     });
   }
@@ -35,7 +35,7 @@ export class MessagesService {
   async findOneMessage(id: string): Promise<any> {
     return this.messageRepository.findOne({
       where: { id: id },
-      relations: ['user', 'theater'],
+      relations: ['user'],
     });
   }
 }
