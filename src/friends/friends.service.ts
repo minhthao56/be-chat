@@ -16,6 +16,7 @@ export class FriendsService {
     const friend = new FriendEntity();
     friend.userId = createFriendDto.userId;
     friend.userIdRequest = createFriendDto.userIdRequest;
+    friend.content = createFriendDto.content;
 
     return await this.friendRepository.save(friend);
   }
@@ -40,5 +41,22 @@ export class FriendsService {
 
   async findAll(): Promise<any> {
     return this.friendRepository.find();
+  }
+
+  async findRequestFriendOfUser(userId: string): Promise<any> {
+    return this.friendRepository.find({
+      where: { userId: userId, status: 1 },
+      relations: ['userRequest'],
+    });
+  }
+
+  async findFriendCofirmed(userId: string): Promise<any> {
+    return this.friendRepository.find({
+      where: [
+        { userId: userId, status: 2 },
+        { userIdRequest: userId, status: 2 },
+      ],
+      relations: ['user', 'userRequest'],
+    });
   }
 }

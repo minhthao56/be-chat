@@ -3,7 +3,7 @@ import { UserEntity } from '../entity/user.entity';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-use.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -60,5 +60,15 @@ export class UsersService {
         email: email,
       },
     });
+  }
+
+  async searchUser(search: string): Promise<any> {
+    console.log(search);
+    const r = await this.usersRepository.find({
+      name: Like(search),
+    });
+    console.log(r);
+
+    return r;
   }
 }

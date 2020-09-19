@@ -22,6 +22,9 @@ export class FriendEntity extends TimeStamp {
   @Column({ default: 1 })
   status: number;
 
+  @Column({ nullable: true })
+  content: string;
+
   @ManyToOne(
     () => UserEntity,
     user => user,

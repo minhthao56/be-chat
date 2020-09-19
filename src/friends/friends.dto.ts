@@ -6,6 +6,9 @@ export class CreateFriendDto {
 
   @IsNotEmpty()
   userIdRequest: string;
+
+  @IsNotEmpty()
+  content: string;
 }
 
 export class UpdateFriendDto {
@@ -15,4 +18,6 @@ export class UpdateFriendDto {
 
   @IsNotEmpty()
   status: number;
+
+  content: string;
 }

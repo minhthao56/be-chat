@@ -32,6 +32,9 @@ export class UserEntity extends TimeStamp {
   })
   urlAvatar: string;
 
+  @Column({ default: 'https://picsum.photos/200' })
+  urlBanner: string;
+
   @OneToMany(
     () => MessagesEntity,
     message => message.user,
