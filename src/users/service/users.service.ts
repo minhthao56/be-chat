@@ -63,12 +63,16 @@ export class UsersService {
   }
 
   async searchUser(search: string): Promise<any> {
-    console.log(search);
-    const r = await this.usersRepository.find({
-      name: Like(search),
+    return this.usersRepository.find({
+      where: [{ name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }],
     });
-    console.log(r);
 
-    return r;
+    // const users = this.usersRepository
+    //   .createQueryBuilder('users')
+    //   .andWhere(`(users.name LIKE :search OR users.email LIKE :search)`, {
+    //     search: `%${search}%`,
+    //   })
+    //   .getMany();
+    // return users;
   }
 }

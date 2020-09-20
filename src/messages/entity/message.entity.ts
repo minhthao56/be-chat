@@ -1,5 +1,4 @@
 import { TimeStamp } from './../../common/time.entity';
-// import { User } from './../../users/entity/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,18 +14,22 @@ export class MessagesEntity extends TimeStamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('text')
   userId: string;
 
-  @Column()
+  @Column('text')
   theaterId: string;
 
-  @Column()
+  @Column('text')
   content: string;
 
   @ManyToOne(
     () => UserEntity,
     user => user.message,
+    {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn()
   user: Promise<UserEntity>;

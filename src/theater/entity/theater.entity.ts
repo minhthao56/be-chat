@@ -1,6 +1,5 @@
 import { MessagesEntity } from './../../messages/entity/message.entity';
 import { TimeStamp } from './../../common/time.entity';
-// import { User } from './../../users/entity/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,10 +15,10 @@ export class TheaterEntity extends TimeStamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('text')
   userId: string;
 
-  @Column()
+  @Column('text')
   userId2: string;
 
   @OneToMany(
@@ -34,6 +33,10 @@ export class TheaterEntity extends TimeStamp {
   @ManyToOne(
     () => UserEntity,
     user => user,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @JoinColumn({ referencedColumnName: 'id', name: 'userId' })
   user: UserEntity;
@@ -41,6 +44,10 @@ export class TheaterEntity extends TimeStamp {
   @ManyToOne(
     () => UserEntity,
     user => user,
+    {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn({ referencedColumnName: 'id', name: 'userId2' })
   user2: UserEntity;

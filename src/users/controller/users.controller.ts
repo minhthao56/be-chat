@@ -22,14 +22,19 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
-  // @Get()
-  // // eslint-disable-next-line @typescript-eslint/ban-types
-  // findAll(@Req() req: Request, @Query() query): Promise<any> {
-  //   // console.log('controller' + req.header('token'));
-  //   console.log(query);
+  @Get()
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  findAll(@Req() req: Request): Promise<any> {
+    // console.log('controller' + req.header('token'));
+    // console.log(query);
 
-  //   return this.usersService.findAll();
-  // }
+    return this.usersService.findAll();
+  }
+
+  @Get('find')
+  async searchUser(@Query() search: { q: string }): Promise<any> {
+    return this.usersService.searchUser(search.q);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<any> {
@@ -47,11 +52,5 @@ export class UsersController {
   @Delete(':id')
   deleteOne(@Param('id') id: string): Promise<any> {
     return this.usersService.deleteOne(id);
-  }
-
-  @Get('/search')
-  async searchUser(@Query() q: string): Promise<any> {
-    console.log(q);
-    return await this.usersService.searchUser(q);
   }
 }

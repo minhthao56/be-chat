@@ -1,3 +1,4 @@
+import { FriendEntity } from './../../friends/friends.entity';
 import { MessagesEntity } from './../../messages/entity/message.entity';
 import { TimeStamp } from './../../common/time.entity';
 import {
@@ -9,7 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-// import { TheaterEntity } from 'src/theater/entity/theater.entity';
+import { TheaterEntity } from 'src/theater/entity/theater.entity';
 
 @Entity()
 @Unique(['email', 'name'])
@@ -17,34 +18,48 @@ export class UserEntity extends TimeStamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('text')
   name: string;
 
-  @Column()
+  @Column('text')
   email: string;
 
-  @Column()
+  @Column('text')
   password: string;
 
   @Column({
     default:
       'https://res.cloudinary.com/du4arxzzj/image/upload/v1590497543/user_lp41pe.png',
+    type: 'text',
   })
   urlAvatar: string;
 
-  @Column({ default: 'https://picsum.photos/200' })
+  @Column({ default: 'https://picsum.photos/200', type: 'text' })
   urlBanner: string;
 
   @OneToMany(
     () => MessagesEntity,
     message => message.user,
+    {
+      cascade: true,
+    },
   )
   message: Promise<MessagesEntity>;
 
+  @OneToMany(
+    () => TheaterEntity,
+    theater => theater,
+    {
+      cascade: true,
+    },
+  )
+  theater: Promise<TheaterEntity>;
+
   // @OneToMany(
-  //   ()=> TheaterEntity, theater=>theater.user
+  //   () => FriendEntity,
+  //   friend => friend.user,
   // )
-  // theater: Promise <TheaterEntity>
+  // friend: FriendEntity[];
 
   @BeforeInsert()
   async hashPassword() {
