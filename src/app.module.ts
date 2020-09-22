@@ -12,6 +12,7 @@ import { AppGateway } from './app.gateway';
 import { TheaterModule } from './theater/theater.module';
 import { MessagesModule } from './messages/messages.module';
 import { FriendsModule } from './friends/friends.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { FriendsModule } from './friends/friends.module';
     TheaterModule,
     MessagesModule,
     FriendsModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
