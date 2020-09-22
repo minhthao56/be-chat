@@ -1,6 +1,6 @@
 import { IsEmail, Length } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @Length(4, 20)
   name: string;
 
@@ -9,4 +9,11 @@ export class CreateUserDto {
 
   @Length(8, 10)
   password: string;
+
+  @Length(8, 10)
+  confirm: string;
+
+  urlAvatar: string;
+
+  urlBanner: string;
 }
