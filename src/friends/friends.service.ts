@@ -59,4 +59,11 @@ export class FriendsService {
       relations: ['user', 'userRequest'],
     });
   }
+
+  async findFriendUserSendRequest(userId: string): Promise<any> {
+    return this.friendRepository.find({
+      where: { userIdRequest: userId, status: 1 },
+      relations: ['user'],
+    });
+  }
 }

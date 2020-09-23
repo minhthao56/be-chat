@@ -48,7 +48,14 @@ export class FriendsController {
   }
 
   @Get('/list/:userId')
-  async findFriendCofirmed(@Param('userId') useId: string): Promise<any> {
-    return this.friendsService.findFriendCofirmed(useId);
+  async findFriendCofirmed(@Param('userId') userId: string): Promise<any> {
+    return this.friendsService.findFriendCofirmed(userId);
+  }
+
+  @Get('/sendrequest/:userId')
+  async findFriendUserSendRequest(
+    @Param('userId') userId: string,
+  ): Promise<any> {
+    return this.friendsService.findFriendUserSendRequest(userId);
   }
 }
