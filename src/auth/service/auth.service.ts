@@ -37,7 +37,8 @@ export class AuthService {
   async CheckLogin(token: string): Promise<any> {
     try {
       const result = await this.jwtService.verify(token);
-      return result;
+      const userInDB = await this.usersService.findOne(result.id);
+      return userInDB;
     } catch (error) {
       throw new HttpException(error, HttpStatus.FORBIDDEN);
     }

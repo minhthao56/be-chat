@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './../dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../entity/user.entity';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
@@ -43,11 +44,22 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<any> {
-    return await this.usersRepository.findOne(id);
+    return await this.usersRepository.findOne({
+      where: { id: id },
+      select: ['name', 'email', 'urlAvatar', 'urlBanner', 'id'],
+    });
   }
 
-  async updateOne(id: string, createUserDto: CreateUserDto): Promise<any> {
-    return await this.usersRepository.update(id, createUserDto);
+  async updateOne(id: string, updateUserDto: UpdateUserDto): Promise<any> {
+    const update = await this.usersRepository.update(id, updateUserDto);
+    if (update.affected) {
+      return await this.usersRepository.findOne(id);
+    } else {
+      throw new HttpException(
+        'error internal server',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async deleteOne(id: string): Promise<any> {

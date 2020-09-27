@@ -17,4 +17,13 @@ export class CloudinaryController {
   async upload(@UploadedFile() file: Express, @Param('userId') userId: string) {
     return await this.cloudinaryService.uploadImage(file.path, userId);
   }
+
+  @Put('/banner/:userId')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadBanner(
+    @UploadedFile() file: Express,
+    @Param('userId') userId: string,
+  ) {
+    return await this.cloudinaryService.uploadImageBanner(file.path, userId);
+  }
 }

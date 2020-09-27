@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './../dto/update-user.dto';
 import {
   Controller,
   Post,
@@ -44,9 +45,9 @@ export class UsersController {
   @Put(':id')
   updateOne(
     @Param('id') id: string,
-    @Body() createUserDto: CreateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ): Promise<any> {
-    return this.usersService.updateOne(id, createUserDto);
+    return this.usersService.updateOne(id, updateUserDto);
   }
 
   @Delete(':id')
