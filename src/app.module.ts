@@ -13,6 +13,7 @@ import { TheaterModule } from './theater/theater.module';
 import { MessagesModule } from './messages/messages.module';
 import { FriendsModule } from './friends/friends.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -30,8 +31,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     MessagesModule,
     FriendsModule,
     CloudinaryModule,
+    NotificationModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController ],
   providers: [AppService, AppGateway],
 })
 export class AppModule implements NestModule {

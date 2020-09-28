@@ -9,9 +9,8 @@ import { Injectable } from '@nestjs/common';
 export class TheaterService {
   constructor(
     @InjectRepository(TheaterEntity)
-    private readonly theaterRepository: Repository<TheaterEntity>, // @InjectRepository(UserEntity)
-  ) // private readonly userRepository: Repository<UserEntity>,
-  {}
+    private readonly theaterRepository: Repository<TheaterEntity>, // @InjectRepository(UserEntity) // private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
   async createTheater(createTheaterDto: CreateTheaterDto): Promise<any> {
     const theaterInDB = await this.theaterRepository.findOne({

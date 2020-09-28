@@ -11,7 +11,7 @@ import {
 
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ namespace: '/chat' })
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly messagesService: MessagesService) {}
