@@ -1,11 +1,7 @@
-
 export class CreateNotificationDto {
-  
-    userIdRevice: string;
-  
-   
-    content: string;
-  
-  
-  }
-  
+  userIdRevice: string;
+
+  content: string;
+
+  userIdSender: string;
+}

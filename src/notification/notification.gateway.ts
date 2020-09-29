@@ -1,3 +1,4 @@
+import { UsersService } from './../users/service/users.service';
 import { CreateNotificationDto } from './notification.dto';
 import {
   SubscribeMessage,
@@ -15,21 +16,22 @@ import { Logger } from '@nestjs/common';
 export class NotificationGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
-  private logger: Logger = new Logger('AppGateway');
+  private logger: Logger = new Logger('NotificationGateway');
+
+  constructor (private usersService: UsersService){}
 
   @SubscribeMessage('joinNoti')
   handleInjoinNoti(client: any, payload: { userId: string }): void {
-    console.log(payload.userId);
-
     client.join(payload.userId);
   }
 
-  @SubscribeMessage('messageNotify')
-  handleNotifyMessage(payload: CreateNotificationDto): void {
-    console.log(payload);
+  async handleNotifyMessage(payload: CreateNotificationDto): Promise<any> {
+   const userSender =  await this.usersService.findOne(payload.userIdSender)
+   const ojbUserSender = {userSender: userSender}
+   const ojbNotify = Object.assign(payload,ojbUserSender)
     this.server
       .to(payload.userIdRevice)
-      .emit('messNotify', { content: payload.content });
+      .emit('messNotify', ojbNotify);
   }
 
   afterInit(server: Server) {
