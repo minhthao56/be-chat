@@ -5,3 +5,10 @@ export class CreateNotificationDto {
 
   userIdSender: string;
 }
+
+export class CreateSubscriptionPushNotifyDto{
+  userSubId: string;
+  
+  meta: any
+
+}

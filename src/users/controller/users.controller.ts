@@ -26,7 +26,11 @@ export class UsersController {
   @Get()
   // eslint-disable-next-line @typescript-eslint/ban-types
   findAll(@Req() req: Request): Promise<any> {
+
     // console.log('controller' + req.header('token'));
+    console.log(req.next());
+    
+
     // console.log(query);
 
     return this.usersService.findAll();
