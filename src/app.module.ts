@@ -1,5 +1,10 @@
 import { TokenMiddleware } from './common/token.middleware';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
@@ -14,6 +19,7 @@ import { MessagesModule } from './messages/messages.module';
 import { FriendsModule } from './friends/friends.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { NotificationModule } from './notification/notification.module';
+import { JwtModule } from './jwt/jwt.module';
 
 @Module({
   imports: [
@@ -32,12 +38,15 @@ import { NotificationModule } from './notification/notification.module';
     FriendsModule,
     CloudinaryModule,
     NotificationModule,
+    JwtModule,
   ],
-  controllers: [AppController ],
+  controllers: [AppController],
   providers: [AppService, AppGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(TokenMiddleware).forRoutes('users');
+    consumer
+      .apply(TokenMiddleware)
+      .forRoutes({ path: 'users', method: RequestMethod.ALL });
   }
 }

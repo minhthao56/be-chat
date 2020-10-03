@@ -28,7 +28,9 @@ export class UsersController {
   findAll(@Req() req: Request): Promise<any> {
 
     // console.log('controller' + req.header('token'));
-    console.log(req.next());
+    console.log("controller");
+    
+    console.log(req.body.c);
     
 
     // console.log(query);
