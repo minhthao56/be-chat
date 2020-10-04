@@ -1,7 +1,14 @@
+import { AuthService } from './../../auth/service/auth.service';
 import { UpdateUserDto } from './../dto/update-user.dto';
-import { JwtService } from '@nestjs/jwt';
+// import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../entity/user.entity';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-use.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
@@ -11,7 +18,8 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
-    private jwtService: JwtService,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<any> {
@@ -34,7 +42,7 @@ export class UsersService {
         urlAvatar: userCreated.urlAvatar,
       };
       return {
-        token: this.jwtService.sign(payload),
+        token: await this.authService.signJwt(payload),
       };
     }
   }
@@ -63,7 +71,7 @@ export class UsersService {
   }
 
   async deleteOne(id: string): Promise<any> {
-    return this.usersRepository.delete(id);
+    return await this.usersRepository.delete(id);
   }
 
   async findByEmail(email: string): Promise<any> {

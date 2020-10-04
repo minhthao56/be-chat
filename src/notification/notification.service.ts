@@ -3,7 +3,7 @@ import { SubPushNotifyEntity } from './subPushNotify.entity';
 import { NoticationsEntity } from './notification.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import webpush, { SendResult } from 'web-push';
+import * as webpush from 'web-push';
 import { Repository } from 'typeorm';
 
 const publicVapidKey =
@@ -18,18 +18,39 @@ export class NotificationService {
     private SubPushNotifyEntity: Repository<SubPushNotifyEntity>,
   ) {}
 
-  async handleSendNotification(): Promise<any> {
+  async handleSendNotification(
+    pushSubscription: any,
+    notification: any,
+  ): Promise<any> {
     webpush.setVapidDetails(
       'mailto:test@test.com',
       publicVapidKey,
       privateVapidKey,
+    );
+   
+
+    return await webpush.sendNotification(
+      pushSubscription,
+      JSON.stringify(notification),
     );
   }
 
   async handleSaveSubPushNotify(
     createSubscriptionPushNotifyDto: CreateSubscriptionPushNotifyDto,
   ): Promise<any> {
-    return await this.SubPushNotifyEntity.save(createSubscriptionPushNotifyDto);
+    const onePushNotify = await this.handlFindOneSubPushNotify(
+      createSubscriptionPushNotifyDto.userSubId,
+    );
+    if (onePushNotify) {
+      return await this.SubPushNotifyEntity.update(
+        onePushNotify.id,
+        createSubscriptionPushNotifyDto,
+      );
+    } else {
+      return await this.SubPushNotifyEntity.save(
+        createSubscriptionPushNotifyDto,
+      );
+    }
   }
 
   async handleDeteleOneSubPushNotify(id: string): Promise<any> {

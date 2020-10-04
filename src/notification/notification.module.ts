@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { SubPushNotifyEntity } from './subPushNotify.entity';
 import { NoticationsEntity } from './notification.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +11,7 @@ import { NotificationService } from './notification.service';
 @Module({
   imports: [
     UsersModule,
+    AuthModule,
     TypeOrmModule.forFeature([NoticationsEntity, SubPushNotifyEntity]),
   ],
   controllers: [NotificationController],

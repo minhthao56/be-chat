@@ -19,7 +19,7 @@ import { MessagesModule } from './messages/messages.module';
 import { FriendsModule } from './friends/friends.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { NotificationModule } from './notification/notification.module';
-import { JwtModule } from './jwt/jwt.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { JwtModule } from './jwt/jwt.module';
     FriendsModule,
     CloudinaryModule,
     NotificationModule,
-    JwtModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
@@ -47,6 +47,13 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(TokenMiddleware)
-      .forRoutes({ path: 'users', method: RequestMethod.ALL });
+      .forRoutes(
+        { path: 'users', method: RequestMethod.ALL },
+        { path: 'theater', method: RequestMethod.ALL },
+        { path: 'notification', method: RequestMethod.ALL },
+        { path: 'friends', method: RequestMethod.ALL },
+        { path: 'messages', method: RequestMethod.ALL },
+        { path: 'cloudinary', method: RequestMethod.ALL },
+      );
   }
 }

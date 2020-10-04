@@ -10,7 +10,6 @@ import {
   Req,
   Query,
 } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-use.dto';
 import { UsersService } from '../service/users.service';
 import { Request } from 'express';
 
@@ -18,23 +17,14 @@ import { Request } from 'express';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  createUser(@Body() createUserDto: CreateUserDto): Promise<any> {
-    return this.usersService.createUser(createUserDto);
-  }
-
   @Get()
   // eslint-disable-next-line @typescript-eslint/ban-types
   findAll(@Req() req: Request): Promise<any> {
-
     // console.log('controller' + req.header('token'));
-    console.log("controller");
-    
-    console.log(req.body.c);
-    
+    console.log('controller');
 
+    console.log(req.headers.authorization);
     // console.log(query);
-
     return this.usersService.findAll();
   }
 

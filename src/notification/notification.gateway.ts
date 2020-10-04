@@ -1,3 +1,6 @@
+import { WsGuard } from './../common/wsGuard';
+import { NotificationService } from './notification.service';
+
 import { UsersService } from './../users/service/users.service';
 import { CreateNotificationDto } from './notification.dto';
 import {
@@ -10,7 +13,7 @@ import {
 } from '@nestjs/websockets';
 
 import { Server, Socket } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 
 @WebSocketGateway({ namespace: '/notification' })
 export class NotificationGateway
@@ -18,20 +21,38 @@ export class NotificationGateway
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('NotificationGateway');
 
-  constructor (private usersService: UsersService){}
-
+  constructor(
+    private usersService: UsersService,
+    private notificationService: NotificationService,
+  ) {}
+  @UseGuards(WsGuard)
   @SubscribeMessage('joinNoti')
-  handleInjoinNoti(client: any, payload: { userId: string }): void {
-    client.join(payload.userId);
+  handleInjoinNoti(client: any): void {
+    const userId = client.handshake.headers.authorization;
+     client.join(userId);
   }
 
   async handleNotifyMessage(payload: CreateNotificationDto): Promise<any> {
-   const userSender =  await this.usersService.findOne(payload.userIdSender)
-   const ojbUserSender = {userSender: userSender}
-   const ojbNotify = Object.assign(payload,ojbUserSender)
-    this.server
-      .to(payload.userIdRevice)
-      .emit('messNotify', ojbNotify);
+    const userSender = await this.usersService.findOne(payload.userIdSender);
+    const ojbUserSender = { userSender: userSender };
+    const ojbNotify = Object.assign(payload, ojbUserSender);
+    this.server.to(payload.userIdRevice).emit('messNotify', ojbNotify);
+    const pushSubscription = await this.notificationService.handlFindOneSubPushNotify(
+      payload.userIdRevice,
+    );
+    const notification = {
+      title: 'Hey, this is a push notification!',
+      body: 'test form server',
+    };
+    this.notificationService.handleSendNotification(
+      pushSubscription.meta,
+      notification,
+    );
+  }
+
+  @SubscribeMessage('disconnect')
+  handleDisconnet(client: any, payload: any): void {
+    console.log(payload);
   }
 
   afterInit(server: Server) {

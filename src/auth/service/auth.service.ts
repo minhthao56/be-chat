@@ -1,12 +1,19 @@
 import { LoginDto } from './../dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../../users/service/users.service';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
@@ -40,7 +47,20 @@ export class AuthService {
       const userInDB = await this.usersService.findOne(result.id);
       return userInDB;
     } catch (error) {
-      throw new HttpException(error, HttpStatus.FORBIDDEN);
+      throw new HttpException(error, HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  async verifyJWT(token: string): Promise<any> {
+    try {
+      const verify = await this.jwtService.verify(token);
+      return verify;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async signJwt(payload: any): Promise<any> {
+    return this.jwtService.sign(payload);
   }
 }

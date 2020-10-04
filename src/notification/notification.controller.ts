@@ -4,7 +4,16 @@ import {
   CreateSubscriptionPushNotifyDto,
 } from './notification.dto';
 import { NotificationGateway } from './notification.gateway';
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+} from '@nestjs/common';
+import { Request } from 'express';
 
 @Controller('notification')
 export class NotificationController {
@@ -23,10 +32,14 @@ export class NotificationController {
 
   @Post('subscription')
   async handSaveSubPushNotify(
+    @Req() req: Request,
     @Body() createSubscriptionPushNotifyDto: CreateSubscriptionPushNotifyDto,
   ): Promise<any> {
+    const sunPushNotify = new CreateSubscriptionPushNotifyDto();
+    sunPushNotify.userSubId = req.headers.authorization;
+    sunPushNotify.meta = createSubscriptionPushNotifyDto;
     return await this.notificationService.handleSaveSubPushNotify(
-      createSubscriptionPushNotifyDto,
+      sunPushNotify,
     );
   }
 
