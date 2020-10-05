@@ -29,7 +29,7 @@ export class NotificationGateway
   @SubscribeMessage('joinNoti')
   handleInjoinNoti(client: any): void {
     const userId = client.handshake.headers.authorization;
-     client.join(userId);
+    client.join(userId);
   }
 
   async handleNotifyMessage(payload: CreateNotificationDto): Promise<any> {
@@ -44,6 +44,8 @@ export class NotificationGateway
       title: 'Hey, this is a push notification!',
       body: 'test form server',
     };
+    console.log(pushSubscription);
+
     this.notificationService.handleSendNotification(
       pushSubscription.meta,
       notification,
