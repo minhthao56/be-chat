@@ -27,9 +27,13 @@ export class NotificationGateway
   ) {}
   @UseGuards(WsGuard)
   @SubscribeMessage('joinNoti')
-  handleInjoinNoti(client: any): void {
+  handleInjoinNoti(client: Socket): void {
     const userId = client.handshake.headers.authorization;
-    client.join(userId);
+    if (userId) {
+      client.join(userId);
+    } else {
+      client.disconnect();
+    }
   }
 
   async handleNotifyMessage(payload: CreateNotificationDto): Promise<any> {
@@ -41,15 +45,16 @@ export class NotificationGateway
       payload.userIdRevice,
     );
     const notification = {
-      title: 'Hey, this is a push notification!',
-      body: 'test form server',
+      title: `${userSender.name}`,
+      body: `${ojbNotify.content}`,
+      icon: 'https://zalo-chat-static.zadn.vn/v1/favicon-96x96.png',
     };
-    console.log(pushSubscription);
-
-    this.notificationService.handleSendNotification(
-      pushSubscription.meta,
-      notification,
-    );
+    if (pushSubscription) {
+      this.notificationService.handleSendNotification(
+        pushSubscription.meta,
+        notification,
+      );
+    }
   }
 
   @SubscribeMessage('disconnect')
