@@ -1,6 +1,5 @@
 import { WsGuard } from './../common/wsGuard';
 import { NotificationService } from './notification.service';
-
 import { UsersService } from './../users/service/users.service';
 import { CreateNotificationDto } from './notification.dto';
 import {
@@ -11,9 +10,9 @@ import {
   OnGatewayDisconnect,
   WebSocketServer,
 } from '@nestjs/websockets';
-
 import { Server, Socket } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
+import { joinNotify, checkUserInRoomNotify } from '../helpers/UserInRoom';
 
 @WebSocketGateway({ namespace: '/notification' })
 export class NotificationGateway
@@ -31,6 +30,12 @@ export class NotificationGateway
     const userId = client.handshake.headers.authorization;
     if (userId) {
       client.join(userId);
+      const user = {
+        userId: userId,
+        socketId: client.id,
+      };
+
+      joinNotify(user);
     } else {
       client.disconnect();
     }

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 
 import { Server, Socket } from 'socket.io';
-import { jonRomChat } from './common/UserInRoom';
+// import { jonRomChat } from './common/UserInRoom';
 
 @WebSocketGateway({ namespace: '/chat' })
 export class AppGateway
@@ -23,7 +23,6 @@ export class AppGateway
   @SubscribeMessage('join')
   handleMessage(client: Socket, payload: { id: string }): void {
     client.join(payload.id);
-    jonRomChat(payload.id);
   }
 
   @SubscribeMessage('sendMess')
