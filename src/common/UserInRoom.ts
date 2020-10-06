@@ -16,6 +16,17 @@ export function jonRomChat(id: string): void {
   console.log(roomChat);
 }
 
-export function EX(): void {
+export function joinNotify(user: { userId: string; socketId: string }): void {
+  const findUserInNotify = roomNotify.filter(
+    (u: { userId: string; socketId: string }) => {
+      return u.userId === user.userId && u.socketId === u.socketId;
+    },
+  );
+  if (findUserInNotify.length) {
+    return;
+  } else {
+    roomNotify.push(user);
+  }
+
   return;
 }

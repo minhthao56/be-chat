@@ -44,10 +44,11 @@ export class NotificationGateway
     const pushSubscription = await this.notificationService.handlFindOneSubPushNotify(
       payload.userIdRevice,
     );
+    console.log(pushSubscription);
+
     const notification = {
       title: `${userSender.name}`,
       body: `${ojbNotify.content}`,
-      icon: 'https://zalo-chat-static.zadn.vn/v1/favicon-96x96.png',
     };
     if (pushSubscription) {
       this.notificationService.handleSendNotification(
