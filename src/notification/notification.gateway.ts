@@ -12,7 +12,11 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Logger, UseGuards } from '@nestjs/common';
-import { joinNotify, checkUserInRoomNotify } from '../helpers/UserInRoom';
+import {
+  joinNotify,
+  checkUserInRoomNotify,
+  deleteUserDisconnect,
+} from '../helpers/UserInRoom';
 
 @WebSocketGateway({ namespace: '/notification' })
 export class NotificationGateway
@@ -34,8 +38,8 @@ export class NotificationGateway
         userId: userId,
         socketId: client.id,
       };
-
       joinNotify(user);
+      this.server.emit()
     } else {
       client.disconnect();
     }
@@ -49,23 +53,18 @@ export class NotificationGateway
     const pushSubscription = await this.notificationService.handlFindOneSubPushNotify(
       payload.userIdRevice,
     );
-    console.log(pushSubscription);
 
+    const userOnline = checkUserInRoomNotify(payload.userIdRevice);
     const notification = {
       title: `${userSender.name}`,
       body: `${ojbNotify.content}`,
     };
-    if (pushSubscription) {
+    if (pushSubscription && !userOnline) {
       this.notificationService.handleSendNotification(
         pushSubscription.meta,
         notification,
       );
     }
-  }
-
-  @SubscribeMessage('disconnect')
-  handleDisconnet(client: any, payload: any): void {
-    console.log(payload);
   }
 
   afterInit(server: Server) {
@@ -74,6 +73,8 @@ export class NotificationGateway
 
   handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected Notification`);
+    const a = deleteUserDisconnect(client.id);
+    console.log(a);
   }
 
   handleConnection(client: Socket, ...args: any[]) {

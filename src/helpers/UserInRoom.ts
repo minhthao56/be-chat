@@ -49,14 +49,21 @@ export function joinNotify(user: { userId: string; socketId: string }): void {
   console.log(roomNotify);
 }
 
-export const checkUserInRoomNotify = (user: {
-  userId: string;
-  socketId: string;
-}) => {
+export const checkUserInRoomNotify = (userId: string) => {
   const findUserInNotify = roomNotify.find(
     (u: { userId: string; socketId: string }) => {
-      return u.userId === user.userId && u.socketId === user.socketId;
+      return u.userId === userId;
     },
   );
   return findUserInNotify;
+};
+
+export const deleteUserDisconnect = (socketId: string) => {
+  const findIndexUser = roomNotify.findIndex(
+    (u: { userId: string; socketId: string }) => {
+      return u.socketId === socketId;
+    },
+  );
+  roomNotify.splice(findIndexUser, 1);
+  return findIndexUser;
 };
