@@ -39,7 +39,7 @@ export class NotificationGateway
         socketId: client.id,
       };
       joinNotify(user);
-      this.server.emit()
+      // this.server.emit()
     } else {
       client.disconnect();
     }
