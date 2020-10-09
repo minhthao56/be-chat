@@ -54,7 +54,7 @@ export class UsersService {
   async findOne(id: string): Promise<any> {
     return await this.usersRepository.findOne({
       where: { id: id },
-      select: ['name', 'email', 'urlAvatar', 'urlBanner', 'id'],
+      select: ['name', 'email', 'urlAvatar', 'urlBanner', 'id', 'status'],
     });
   }
 

@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './../users/dto/update-user.dto';
 import { WsGuard } from './../common/wsGuard';
 import { NotificationService } from './notification.service';
 import { UsersService } from './../users/service/users.service';
@@ -16,6 +17,7 @@ import {
   joinNotify,
   checkUserInRoomNotify,
   deleteUserDisconnect,
+  checkUserSocketNotify
 } from '../helpers/UserInRoom';
 
 @WebSocketGateway({ namespace: '/notification' })
@@ -30,7 +32,7 @@ export class NotificationGateway
   ) {}
   @UseGuards(WsGuard)
   @SubscribeMessage('joinNoti')
-  handleInjoinNoti(client: Socket): void {
+  async handleInjoinNoti(client: Socket): Promise<any> {
     const userId = client.handshake.headers.authorization;
     if (userId) {
       client.join(userId);
@@ -39,21 +41,25 @@ export class NotificationGateway
         socketId: client.id,
       };
       joinNotify(user);
-      // this.server.emit()
     } else {
       client.disconnect();
     }
+    const updateUser = new UpdateUserDto();
+    updateUser.status = true;
+    await this.usersService.updateOne(userId, updateUser);
   }
 
   async handleNotifyMessage(payload: CreateNotificationDto): Promise<any> {
+    //Send NotifiMess
     const userSender = await this.usersService.findOne(payload.userIdSender);
     const ojbUserSender = { userSender: userSender };
     const ojbNotify = Object.assign(payload, ojbUserSender);
     this.server.to(payload.userIdRevice).emit('messNotify', ojbNotify);
+
+    //Send notify Offline
     const pushSubscription = await this.notificationService.handlFindOneSubPushNotify(
       payload.userIdRevice,
     );
-
     const userOnline = checkUserInRoomNotify(payload.userIdRevice);
     const notification = {
       title: `${userSender.name}`,
@@ -71,8 +77,15 @@ export class NotificationGateway
     this.logger.log('Init Nofication');
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected Notification`);
+
+    const updateUser = new UpdateUserDto();
+    updateUser.status = false;
+
+    const user = checkUserSocketNotify(client.id)
+    await this.usersService.updateOne(user.userId, updateUser)
+
     const a = deleteUserDisconnect(client.id);
     console.log(a);
   }

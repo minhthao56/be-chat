@@ -58,6 +58,15 @@ export const checkUserInRoomNotify = (userId: string) => {
   return findUserInNotify;
 };
 
+export const checkUserSocketNotify = (socketId: string) => {
+  const findUserInNotify = roomNotify.find(
+    (u: { userId: string; socketId: string }) => {
+      return u.socketId === socketId;
+    },
+  );
+  return findUserInNotify;
+};
+
 export const deleteUserDisconnect = (socketId: string) => {
   const findIndexUser = roomNotify.findIndex(
     (u: { userId: string; socketId: string }) => {

@@ -1,11 +1,10 @@
 // import { IsEmail, Length } from 'class-validator';
 
 export class UpdateUserDto {
- 
   name: string;
 
   email: string;
- 
+
   password: string;
 
   confirm: string;
@@ -13,4 +12,6 @@ export class UpdateUserDto {
   urlAvatar: string;
 
   urlBanner: string;
+
+  status: boolean;
 }
