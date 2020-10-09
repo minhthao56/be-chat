@@ -35,6 +35,14 @@ export class AppGateway
     this.server.to(payload.theaterId).emit('mess', detailMess);
   }
 
+  @SubscribeMessage('typing')
+  async handleType(
+    client: Socket,
+    payload: { statusTyping: boolean },
+  ): Promise<any> {
+    console.log(payload.statusTyping);
+  }
+
   afterInit(server: Server) {
     this.logger.log('Init');
   }
