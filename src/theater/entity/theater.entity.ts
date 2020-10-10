@@ -28,7 +28,7 @@ export class TheaterEntity extends TimeStamp {
       cascade: true,
     },
   )
-  message: Promise<MessagesEntity>;
+  message: any;
 
   @ManyToOne(
     () => UserEntity,

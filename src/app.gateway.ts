@@ -35,12 +35,13 @@ export class AppGateway
     this.server.to(payload.theaterId).emit('mess', detailMess);
   }
 
+  // @UseGuards(WsGuard)
   @SubscribeMessage('typing')
   async handleType(
     client: Socket,
-    payload: { statusTyping: boolean },
+    payload: { statusTyping: boolean; theaterId: string },
   ): Promise<any> {
-    console.log(payload.statusTyping);
+    this.server.to(payload.theaterId).emit('typeStatus', payload);
   }
 
   afterInit(server: Server) {

@@ -1,3 +1,4 @@
+import { MessagesEntity } from './../../messages/entity/message.entity';
 import { TheaterEntity } from './../entity/theater.entity';
 // import { UserEntity } from './../../users/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,7 +10,9 @@ import { Injectable } from '@nestjs/common';
 export class TheaterService {
   constructor(
     @InjectRepository(TheaterEntity)
-    private readonly theaterRepository: Repository<TheaterEntity>, // @InjectRepository(UserEntity) // private readonly userRepository: Repository<UserEntity>,
+    private readonly theaterRepository: Repository<TheaterEntity>,
+    @InjectRepository(MessagesEntity)
+    private readonly messagesRepository: Repository<MessagesEntity>,
   ) {}
 
   async createTheater(createTheaterDto: CreateTheaterDto): Promise<any> {
@@ -49,8 +52,14 @@ export class TheaterService {
   async findTheaterOfUser(id: string): Promise<any> {
     const allTheaterOfUser = await this.theaterRepository.find({
       where: [{ userId: id }, { userId2: id }],
-      relations: ['user', 'user2'],
+      relations: ['user', 'user2', 'message'],
     });
+
+    allTheaterOfUser.map(info => {
+      const length = info.message.length;
+      info.message.splice(0, length - 1);
+    });
+
     return allTheaterOfUser;
   }
 }
