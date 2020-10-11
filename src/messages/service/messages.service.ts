@@ -1,6 +1,6 @@
 import { CreateMessageDto } from './../dto/create-message.dto';
 import { MessagesEntity } from './../entity/message.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -20,11 +20,25 @@ export class MessagesService {
     return await this.messageRepository.save(message);
   }
 
-  async findAllMessagesInThearter(theaterId: string): Promise<any> {
-    return this.messageRepository.find({
+  async findAllMessagesInThearter(
+    theaterId: string,
+    query: number,
+  ): Promise<any> {
+    const count: number = (
+      await this.messageRepository.find({ where: { theaterId: theaterId } })
+    ).length;
+
+    if (count < query) {
+      query = count;
+      throw new HttpException("That's all messages", 404);
+    }
+
+    return await this.messageRepository.find({
       where: { theaterId: theaterId },
       relations: ['user'],
       order: { createAt: 'ASC' },
+      skip: count - query,
+      take: 20,
     });
   }
 

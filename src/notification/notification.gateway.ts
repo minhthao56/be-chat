@@ -17,7 +17,7 @@ import {
   joinNotify,
   checkUserInRoomNotify,
   deleteUserDisconnect,
-  checkUserSocketNotify
+  checkUserSocketNotify,
 } from '../helpers/UserInRoom';
 
 @WebSocketGateway({ namespace: '/notification' })
@@ -83,8 +83,8 @@ export class NotificationGateway
     const updateUser = new UpdateUserDto();
     updateUser.status = false;
 
-    const user = checkUserSocketNotify(client.id)
-    await this.usersService.updateOne(user.userId, updateUser)
+    const user = checkUserSocketNotify(client.id);
+    await this.usersService.updateOne(user.userId, updateUser);
 
     const a = deleteUserDisconnect(client.id);
     console.log(a);
