@@ -20,6 +20,8 @@ export class TheaterController {
 
   @Delete(':id')
   async deleteOne(@Param('id') id: string): Promise<any> {
+    console.log(id);
+
     return this.theaterService.deletelOne(id);
   }
 

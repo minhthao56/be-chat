@@ -30,16 +30,23 @@ export class MessagesService {
 
     if (count < query) {
       query = count;
-      throw new HttpException("That's all messages", 404);
+      
     }
 
-    return await this.messageRepository.find({
-      where: { theaterId: theaterId },
-      relations: ['user'],
-      order: { createAt: 'ASC' },
-      skip: count - query,
-      take: 20,
-    });
+    try {
+      const mess =await this.messageRepository.find({
+        where: { theaterId: theaterId },
+        relations: ['user'],
+        order: { createAt: 'ASC' },
+        skip: count - query,
+        take: 20,
+      });
+      return mess
+      
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.NOT_FOUND)
+    }
+    
   }
 
   async findAllMassages(): Promise<any> {
