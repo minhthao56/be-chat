@@ -36,10 +36,7 @@ export class UsersService {
       user.password = createUserDto.password;
       const userCreated = await this.usersRepository.save(user);
       const payload = {
-        name: userCreated.name,
         id: userCreated.id,
-        email: userCreated.email,
-        urlAvatar: userCreated.urlAvatar,
       };
       return {
         token: await this.authService.signJwt(payload),

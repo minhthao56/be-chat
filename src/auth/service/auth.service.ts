@@ -1,3 +1,4 @@
+import { CreateUserDto } from './../../users/dto/create-use.dto';
 import { LoginDto } from './../dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../../users/service/users.service';
@@ -9,6 +10,8 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { OAuth2Client } from 'google-auth-library';
+import * as generator from 'generate-password';
 
 @Injectable()
 export class AuthService {
@@ -30,13 +33,10 @@ export class AuthService {
       throw new HttpException('Password woring', HttpStatus.BAD_REQUEST);
     } else {
       const payload = {
-        name: userInDB.name,
         id: userInDB.id,
-        email: userInDB.email,
-        urlAvatar: userInDB.urlAvatar,
       };
       return {
-        token: this.jwtService.sign(payload),
+        token: await this.jwtService.signAsync(payload),
       };
     }
   }
@@ -62,5 +62,40 @@ export class AuthService {
 
   async signJwt(payload: any): Promise<any> {
     return this.jwtService.sign(payload);
+  }
+
+  async loginWithGoogle(tokenId: string): Promise<any> {
+    const client = new OAuth2Client(
+      '184515481576-3pr72umu9nmn7mblu4jvn5b45vu1o5uk.apps.googleusercontent.com',
+    );
+    try {
+      const result: any = await client.verifyIdToken({
+        idToken: tokenId,
+        audience:
+          '184515481576-3pr72umu9nmn7mblu4jvn5b45vu1o5uk.apps.googleusercontent.com',
+      });
+      const { email, name, picture } = result.payload;
+      const userInDb = await this.usersService.findByEmail(email);
+      console.log(userInDb);
+
+      if (userInDb) {
+        return {
+          token: await this.jwtService.signAsync({ id: userInDb.id }),
+        };
+      } else {
+        const password = generator.generate({ length: 10, numbers: true });
+        const userGoogle = new CreateUserDto();
+        userGoogle.email = email;
+        userGoogle.name = name;
+        userGoogle.urlAvatar = picture;
+        userGoogle.password = password;
+        userGoogle.confirm = password;
+        const tokenCreateUser = await this.usersService.createUser(userGoogle);
+        return tokenCreateUser;
+      }
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 }

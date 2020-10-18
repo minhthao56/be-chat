@@ -16,4 +16,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Length(8, 20)
   confirm: string;
+
+  urlAvatar: string;
 }

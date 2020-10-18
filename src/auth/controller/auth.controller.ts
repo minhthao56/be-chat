@@ -4,6 +4,7 @@ import { LoginDto } from './../dto/login.dto';
 import { AuthService } from './../service/auth.service';
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -17,13 +18,17 @@ export class AuthController {
   }
 
   @Post('register')
-  createUser(@Body() createUserDto: CreateUserDto): Promise<any> {
-    return this.usersService.createUser(createUserDto);
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<any> {
+    return await this.usersService.createUser(createUserDto);
   }
 
   @Get()
   async CheckLogin(@Req() req: Request) {
     const token = req.headers.authorization.split(' ')[1];
     return this.authService.CheckLogin(token);
+  }
+  @Post('google')
+  async loginWithGoogle(@Body() tokentId: { tokenId: string }): Promise<any> {
+    return this.authService.loginWithGoogle(tokentId.tokenId);
   }
 }
