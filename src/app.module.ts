@@ -25,11 +25,20 @@ import { CommonModule } from './common/common.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      url:
-        'postgres://bnhuckxq:UhagbgGI3I6CSWLibdwksM36uqw6Qhch@arjuna.db.elephantsql.com:5432/bnhuckxq',
-      autoLoadEntities: true,
-      synchronize: true,
+      // type: 'postgres',
+      // url:
+      //   'postgres://bnhuckxq:UhagbgGI3I6CSWLibdwksM36uqw6Qhch@arjuna.db.elephantsql.com:5432/bnhuckxq',
+      // autoLoadEntities: true,
+      // synchronize: true,
+      type:"postgres",
+      username:"postgres",
+      password:"119955",
+      port:5432,
+      database:"zalo",
+      host:"127.0.0.1",
+      // synchronize:true,
+      // entities:["dist/**/*.entity{.ts,.js}"]
+       autoLoadEntities: true,
     }),
     UsersModule,
     AuthModule,
